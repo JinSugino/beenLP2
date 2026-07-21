@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スクール紹介 | BeEngineer Tokyo — つくる楽しさから本物のスキルへ</title>
+<meta name="description" content="BeEngineer Tokyo のスクール紹介。Python・Webアプリ・モバイルアプリを実践的に学ぶ講座内容、受講スケジュール、学習環境、生徒の様子を紹介します。">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS (v4) -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<!-- 共通スタイル -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="antialiased">
+<!-- 共通ヘッダー -->
+<header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 shrink-0" aria-label="BeEngineer Tokyo ホーム">
+      <img src="assets/logo/BeEngineer_logo.svg" alt="BeEngineer Tokyo"
+           class="h-6 md:h-7 w-auto"
+           onerror="this.onerror=null;this.src='https://placehold.co/180x40/ffffff/3fb04d?text=BeEngineer'">
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600" aria-label="グローバルナビ">
+      <a href="index.html" class="nav-link hover:text-[#3fb04d] transition-colors">トップ</a>
+      <a href="student.html" aria-current="page" class="nav-link text-[#3fb04d]">スクール紹介</a>
+      <a href="teacher.html" class="nav-link hover:text-[#3fb04d] transition-colors">学校連携</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="teacher.html#contact"
+         class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-[#3fb04d] hover:bg-[#39a044] text-white text-xs font-bold transition-colors">
+        お問い合わせ
+      </a>
+      <button id="menu-btn" class="md:hidden p-2 -mr-2 text-gray-700" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-nav">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- モバイルナビ -->
+  <nav id="mobile-nav" class="md:hidden hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1 text-sm font-medium" aria-label="モバイルナビ">
+    <a href="index.html" class="block px-3 py-2.5 rounded-lg hover:bg-gray-50">トップ</a>
+    <a href="student.html" class="block px-3 py-2.5 rounded-lg bg-[#3fb04d]/10 text-[#3fb04d] font-bold">スクール紹介（受講生・保護者の方）</a>
+    <a href="teacher.html" class="block px-3 py-2.5 rounded-lg hover:bg-gray-50">学校連携（学校関係者の方）</a>
+    <a href="teacher.html#contact" class="block px-3 py-2.5 rounded-lg bg-[#3fb04d] text-white text-center font-bold mt-2">お問い合わせ</a>
+  </nav>
+</header>
+<main id="top">
+  <section class="relative pt-28 md:pt-36 pb-20 md:pb-28 overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-[28rem] h-[28rem] bg-[#3fb04d]/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <span class="eyebrow inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#3fb04d]/10 text-[#3fb04d] border border-[#3fb04d]/20 mb-6">For Students</span>
+      <h1 class="h-section text-3xl sm:text-5xl md:text-6xl text-gray-900 max-w-3xl">つくる楽しさから、<br><span class="text-[#3fb04d]">本物のスキル</span>へ。</h1>
+      <p class="text-gray-600 text-sm md:text-lg mt-6 max-w-xl leading-relaxed">実際に手を動かしながら、Web・アプリ・Python を学ぶ。受講生・保護者の方に向けて、講座の中身と学びの環境を紹介します。</p>
+      <div class="mt-8 inline-flex items-center gap-2 text-xs font-bold text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-4 py-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        このスクール紹介ページは Phase 3 で本制作予定（現在は簡易版）
+      </div>
+    </div>
+  </section>
+  <section id="concept" class="py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="eyebrow text-[#3fb04d] mb-3">Concept</p>
+      <h2 class="h-section text-2xl sm:text-3xl md:text-4xl text-gray-900">コンセプト</h2>
+      <p class="text-gray-600 text-sm md:text-base mt-5 max-w-2xl leading-relaxed">トップページからの掘り下げ。「中身が見えにくい」を解消し、学びの具体的なイメージを伝えます。</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+      </div>
+    </div>
+  </section>
+  <section id="curriculum" class="py-20 md:py-28 bg-[#f9fafb] border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="eyebrow text-[#3fb04d] mb-3">Curriculum</p>
+      <h2 class="h-section text-2xl sm:text-3xl md:text-4xl text-gray-900">講座内容</h2>
+      <p class="text-gray-600 text-sm md:text-base mt-5 max-w-2xl leading-relaxed">1年目は Python・Webアプリ、2年目はモバイルアプリ。週1回（土日各2時間）の受講スケジュール・時間割もここに掲載予定です。</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+      </div>
+    </div>
+  </section>
+  <section id="system" class="py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="eyebrow text-[#3fb04d] mb-3">Support</p>
+      <h2 class="h-section text-2xl sm:text-3xl md:text-4xl text-gray-900">学習環境・サポート</h2>
+      <p class="text-gray-600 text-sm md:text-base mt-5 max-w-2xl leading-relaxed">学習環境やサポート体制を明記します。</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+      </div>
+    </div>
+  </section>
+  <section id="students" class="py-20 md:py-28 bg-[#f9fafb] border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="eyebrow text-[#3fb04d] mb-3">Students' Work</p>
+      <h2 class="h-section text-2xl sm:text-3xl md:text-4xl text-gray-900">生徒の様子</h2>
+      <p class="text-gray-600 text-sm md:text-base mt-5 max-w-2xl leading-relaxed">成果物の紹介、受講生・保護者の口コミを掲載予定です。</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+        <div class="rounded-3xl p-8 border border-dashed border-gray-300 text-gray-400 min-h-[140px] flex items-center justify-center text-sm">Coming soon</div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- 共通フッター -->
+<footer class="bg-gray-950 text-gray-400">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-12 gap-10">
+      <div class="md:col-span-5">
+        <img src="assets/logo/BeEngineer_logo.svg" alt="BeEngineer Tokyo"
+             class="h-7 w-auto mb-4 brightness-0 invert"
+             onerror="this.onerror=null;this.src='https://placehold.co/180x40/0a0a0a/3fb04d?text=BeEngineer'">
+        <p class="text-sm leading-relaxed max-w-sm">
+          社会で通用する、生きたITのチカラを。現役エンジニアが指導する、中高生のためのプログラミングスクール。
+        </p>
+        <div class="mt-6 grid grid-cols-2 gap-1.5 max-w-sm">
+          <!-- TODO: href を BeEngineer 公式 Instagram の実URLに差し替え -->
+          <a href="#" aria-label="Instagram（BeEngineer公式）"
+             class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
+            <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#d6249f">
+              <!-- アカウントのサムネ画像。無ければプラットフォームアイコンを表示 -->
+              <img src="assets/images/sns-instagram.png" alt=""
+                   class="w-full h-full object-cover"
+                   onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"
+                   onload="this.nextElementSibling.style.display='none';">
+              <span class="absolute inset-0 items-center justify-center" style="display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></span>
+            </span>
+            <span class="leading-tight">
+              <span class="block text-xs font-bold text-gray-200 group-hover:text-white transition-colors">Instagram</span>
+              <span class="block text-[11px] text-gray-500">@beengineer_tokyo</span>
+            </span>
+          </a>
+          <!-- TODO: href を BeEngineer 公式 YouTube の実URLに差し替え -->
+          <a href="#" aria-label="YouTube（BeEngineer公式）"
+             class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
+            <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#ff0000">
+              <!-- アカウントのサムネ画像。無ければプラットフォームアイコンを表示 -->
+              <img src="assets/images/sns-youtube.png" alt=""
+                   class="w-full h-full object-cover"
+                   onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"
+                   onload="this.nextElementSibling.style.display='none';">
+              <span class="absolute inset-0 items-center justify-center" style="display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.8-1.8C19.3 5 12 5 12 5s-7.3 0-8.8.5A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.8 1.8C4.7 19 12 19 12 19s7.3 0 8.8-.5a2.5 2.5 0 0 0 1.8-1.8C23 15.2 23 12 23 12ZM9.8 15.3V8.7l6.2 3.3-6.2 3.3Z"/></svg></span>
+            </span>
+            <span class="leading-tight">
+              <span class="block text-xs font-bold text-gray-200 group-hover:text-white transition-colors">YouTube</span>
+              <span class="block text-[11px] text-gray-500">BeEngineer Tokyo</span>
+            </span>
+          </a>
+          <!-- TODO: href を BeEngineer 公式 TikTok の実URLに差し替え -->
+          <a href="#" aria-label="TikTok（BeEngineer公式）"
+             class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
+            <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#010101">
+              <!-- アカウントのサムネ画像。無ければプラットフォームアイコンを表示 -->
+              <img src="assets/images/sns-tiktok.png" alt=""
+                   class="w-full h-full object-cover"
+                   onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"
+                   onload="this.nextElementSibling.style.display='none';">
+              <span class="absolute inset-0 items-center justify-center" style="display:flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M16.6 5.8a4.3 4.3 0 0 1-1-2.8h-3v11.7a2.5 2.5 0 1 1-2.5-2.5c.2 0 .5 0 .7.1V9.2a5.6 5.6 0 0 0-.7 0 5.5 5.5 0 1 0 5.5 5.5V9a7.2 7.2 0 0 0 4 1.2V7.2a4.3 4.3 0 0 1-2.5-1.4Z"/></svg></span>
+            </span>
+            <span class="leading-tight">
+              <span class="block text-xs font-bold text-gray-200 group-hover:text-white transition-colors">TikTok</span>
+              <span class="block text-[11px] text-gray-500">@beengineer_tokyo</span>
+            </span>
+          </a>
+          <!-- TODO: href を BeEngineer 公式 X の実URLに差し替え -->
+          <a href="#" aria-label="X（BeEngineer公式）"
+             class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
+            <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#000000">
+              <!-- アカウントのサムネ画像。無ければプラットフォームアイコンを表示 -->
+              <img src="assets/images/sns-x.png" alt=""
+                   class="w-full h-full object-cover"
+                   onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"
+                   onload="this.nextElementSibling.style.display='none';">
+              <span class="absolute inset-0 items-center justify-center" style="display:flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.3H4.4l13.2 17.3Z"/></svg></span>
+            </span>
+            <span class="leading-tight">
+              <span class="block text-xs font-bold text-gray-200 group-hover:text-white transition-colors">X</span>
+              <span class="block text-[11px] text-gray-500">@BeEngineer_tw</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="md:col-span-4">
+        <h3 class="eyebrow text-white/70 mb-4">News</h3>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-3"><time class="shrink-0 text-gray-500 tabular-nums">2026.07</time><a href="#" class="hover:text-white transition-colors">夏の無料体験会の受付を開始しました。</a></li>
+          <li class="flex gap-3"><time class="shrink-0 text-gray-500 tabular-nums">2026.06</time><a href="#" class="hover:text-white transition-colors">新たに連携校が加わりました。</a></li>
+          <li class="flex gap-3"><time class="shrink-0 text-gray-500 tabular-nums">2026.05</time><a href="#" class="hover:text-white transition-colors">教員向け生成AI研修プログラムを公開。</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <h3 class="eyebrow text-white/70 mb-4">Site Map</h3>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="index.html" class="hover:text-white transition-colors">トップ</a></li>
+          <li><a href="student.html" class="hover:text-white transition-colors">スクール紹介</a></li>
+          <li><a href="teacher.html" class="hover:text-white transition-colors">学校連携</a></li>
+          <li><a href="teacher.html#contact" class="hover:text-white transition-colors">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-500">
+      <p class="font-bold text-gray-400">株式会社ワオテック / BeEngineer Tokyo</p>
+      <p>&copy; Waotech Inc. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
