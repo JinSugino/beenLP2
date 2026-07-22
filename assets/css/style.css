@@ -13,7 +13,10 @@
   --be-surface: #f9fafb;
 }
 
-html { scroll-behavior: smooth; }
+/* scroll-behavior: smooth は ScrollTrigger の scrub / pin と競合し
+   スクロールの遅延やもたつきの原因になるため無効にする。
+   アンカーリンクの滑らかな移動は JS 側で個別に処理する。 */
+html { scroll-behavior: auto; }
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
