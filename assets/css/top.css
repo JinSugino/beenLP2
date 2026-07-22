@@ -21,6 +21,45 @@
   .site-header { transition: none; }
 }
 
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.site-bg::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  aspect-ratio: 16 / 10;          /* 画像比率に合わせて調整 */
+  background-image: url('../images/bridge-04.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* 白オーバーレイも同じ枠に */
+.site-bg::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  aspect-ratio: 16 / 10;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 16px;
+}
+body { background: transparent; }
+.logo-bridge { background: transparent; }   /* #fff → transparent */
+.news-onbridge { background: rgba(255,255,255,0.85); } /* または transparent */
+
 /* ============================================================
    LOADER（読み込み画面）— 動画方式
    白背景で動画を再生（横幅20%）→ 終了後に拡大しながらフェードアウト
@@ -235,6 +274,10 @@ body.loading { overflow: hidden; }
 }
 @keyframes cue-run { to { top: 100%; } }
 
+.line span {
+  white-space: nowrap; /* 途中での自動改行を禁止 */
+}
+
 /* ============================================================
    マーキー（帯状の流れるテキスト）
    ============================================================ */
@@ -425,52 +468,81 @@ body.loading { overflow: hidden; }
    ============================================================ */
 .logo-bridge {
   position: relative;
-  /* この高さ分の“間”を作る。sticky が効く余白 */
-  height: 130vh;
-  background: #ffffff;
-  overflow: hidden;
+  height: 200vh;
+  background: transparent;   /* ← #fff から変更 */
+  z-index: 0;                /* ← 追加。site-bg(-1) より上、news(10) より下 */
 }
+
 .logo-bridge-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
+  width: 100%;
   display: grid;
   place-items: center;
   overflow: hidden;
 }
-.logo-bridge-mark {
-  position: relative;
+
+/* 04：sticky の中で中央固定。GSAP に y を渡すので translate は使わない */
+.logo-bridge-bg {
+  left: 50%;
+  width: min(90vw, 800px);
+  height: 500px;
+  margin-left: min(-45vw, -400px);
+  margin-top: -250px;
+  transform: none;
+  will-change: transform;
   z-index: 0;
-  grid-area: 1 / 1;
-  width: min(70vw, 640px);
-  height: auto;
-  opacity: 0.10;
-  filter: grayscale(1);
-  user-select: none;
   pointer-events: none;
-}
-.logo-bridge-text {
-  position: relative;
-  z-index: 0;
-  grid-area: 1 / 1;
-  font-weight: 900;
-  font-size: clamp(3rem, 12vw, 10rem);
-  letter-spacing: -0.03em;
-  color: #0f172a;
-  opacity: 0.08;
-  white-space: nowrap;
-  user-select: none;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-/* 前面の写真2枚（ロゴの上に重ねる） */
+/* 写真群は sticky の外なので、セクション基準で絶対配置 */
 .bridge-photos {
-  grid-area: 1 / 1;
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%,-50%);
+  width: min(88vw, 720px);
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;   /* sticky レイヤーより上に */
+}
+
+/* ===============================================
+   ロゴ（ z-index: 3 ）
+   写真2より上、写真1より下に配置・中央完全固定
+   =============================================== */
+.logo-bridge-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(70vw, 640px);
+  height: min(70vw, 640px);
+  z-index: 3;
+  pointer-events: none;
+}
+.logo-bridge-canvas {
+  width: min(80vw, 800px);
+  height: min(32vw, 320px);   /* ロゴのアスペクト比に合わせる */
+}
+
+/* ===============================================
+   写真ラッパー
+   親要素でスタックコンテキストを作らないよう調整
+   =============================================== */
+.bridge-photos {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* 中央寄せ */
   width: min(88vw, 720px);
   height: 100%;
   pointer-events: none;
 }
+
 .bridge-photo {
   position: absolute;
   margin: 0;
@@ -479,57 +551,80 @@ body.loading { overflow: hidden; }
   box-shadow: 0 30px 60px -22px rgba(16,24,40,0.4);
   /* フェードイン初期状態 */
   opacity: 0;
-  transform: translateY(36px) scale(0.96);
   will-change: opacity, transform;
+  /* ★ GSAPと競合しないよう transform を外し opacity だけに絞る */
+  transition: opacity 0.9s cubic-bezier(.22,.61,.36,1);
 }
+
 .bridge-photo img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
-/* 3枚を高さ違いでずらして配置（スクロールで順に出現） */
+
+/* ===============================================
+   各写真の z-index 個別指定 & 配置
+   =============================================== */
+/* 写真1：最前面 (z-index: 4) */
 .bridge-photo-1 {
+  z-index: 4;
   width: 30%;
   aspect-ratio: 4 / 5;
-  top: 8%; left: 2%;
+  top: 8%;
+  left: 2%;
 }
+
+/* 写真2：ロゴの下、写真3の上 (z-index: 2) */
 .bridge-photo-2 {
+  z-index: 2;
   width: 32%;
   aspect-ratio: 4 / 5;
-  top: 30%; left: 34%;
+  top: 63%; /* バランスを考慮し 63% から調整 */
+  left: 34%;
 }
+
+/* 写真3：最背面 (z-index: 1) */
 .bridge-photo-3 {
-  width: 30%;
+  z-index: 1;
+  width: 38%;
   aspect-ratio: 4 / 5;
-  top: 12%; right: 2%;
+  top: 12%;
+  right: 2%;
 }
+
 /* 表示状態（JSで付与） */
 .bridge-photo.is-in {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-.bridge-photo,
-.bridge-photo.is-in {
-  transition: opacity 0.9s cubic-bezier(.22,.61,.36,1),
-              transform 0.9s cubic-bezier(.22,.61,.36,1);
 }
 
 /* News セクションを不透明にして、ロゴの上に被さって通過させる */
 .news-onbridge {
   position: relative;
-  z-index: 1;
+  z-index: 10; /* ロゴ(3)や写真1(4)よりも確実に上に乗るよう高めに設定 */
   background: #ffffff;
 }
 
+
+
+/* ===============================================
+   レスポンシブ & アクセシビリティ
+   =============================================== */
 @media (max-width: 640px) {
-  .logo-bridge, .logo-bridge-sticky { height: 72vh; }
+  /* sticky の余白を維持するため親を大きく、固定枠を高さ小さめに修正 */
+  .logo-bridge { height: 110vh; }
+  .logo-bridge-sticky { height: 80vh; }
+  
   .bridge-photo-1 { width: 44%; top: 4%; left: 2%; }
-  .bridge-photo-2 { width: 46%; top: 34%; left: 27%; }
+  .bridge-photo-2 { width: 46%; top: 40%; left: 27%; }
   .bridge-photo-3 { width: 42%; top: 10%; right: 2%; }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .bridge-photo { transition: none; }
 }
+
+
 /* ============================================================
    HERO 人物ビジュアル（切り抜きPNG）— 右サイド配置
    構造: .hero-stage > .hero-figure-wrap > .hero-figure(img)

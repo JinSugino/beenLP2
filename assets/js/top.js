@@ -233,6 +233,7 @@
     });
   });
 
+
   /* ---------- PIN 横スクロール ショーケース ---------- */
   const track = document.getElementById('showcaseTrack');
   const showcase = document.getElementById('showcase');
@@ -298,7 +299,179 @@
     }
     applyHeader(window.scrollY || 0);
   }
+  
+// GSAPプラグイン登録（まだしていない場合）
+gsap.registerPlugin(ScrollTrigger);
 
+// ロゴブリッジセクションの2Dロゴ演出
+gsap.to(".logo-bridge-svg", {
+  opacity: 1,
+  scale: 1,
+  y: 0,
+  duration: 1,
+  ease: "power2.out",
+  scrollTrigger: {
+    trigger: ".logo-bridge",
+    start: "top 60%",  // セクションが画面下から60%の位置に来たら発動
+    end: "bottom top",
+    toggleActions: "play reverse play reverse" // 行き来した時に再アニメーション
+  }
+});
+(function initBridge3DLogo() {
+  const container = document.getElementById('bridge-canvas');
+  if (!container || typeof THREE === 'undefined') return;
+
+  let root3D = null;
+  let targetRotY = 0, targetRotX = 0.15;
+  let curRotY = 0, curRotX = 0.15;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    45, container.clientWidth / container.clientHeight, 1, 1000
+  );
+  camera.position.set(0, 0, 120);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const l1 = new THREE.DirectionalLight(0x3fb04d, 1.2);
+  l1.position.set(100, 100, 100); scene.add(l1);
+  const l2 = new THREE.DirectionalLight(0x3b82f6, 0.8);
+  l2.position.set(-100, -100, 50); scene.add(l2);
+
+  root3D = new THREE.Group();
+  scene.add(root3D);
+
+    const material = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    roughness: 0.25,
+    metalness: 0.05,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.1
+    });
+
+  const loader = new THREE.SVGLoader();
+  loader.load('assets/logo/BeEngineer_logo.svg', (data) => {
+    const rawGroup = new THREE.Group();
+    const pivot = new THREE.Group();
+    const extrude = { depth: 12, bevelEnabled: true, bevelThickness: 1, bevelSize: 0.5, bevelSegments: 3 };
+
+    data.paths.forEach((path) => {
+      THREE.SVGLoader.createShapes(path).forEach((shape) => {
+        rawGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, extrude), material));
+      });
+    });
+
+    rawGroup.updateMatrixWorld(true);
+    const size = new THREE.Vector3();
+    new THREE.Box3().setFromObject(rawGroup).getSize(size);
+    const TARGET_SIZE = 100;  // 65 → 100 で約1.5倍
+    const scaleFactor = TARGET_SIZE / Math.max(size.x, size.y);
+    rawGroup.scale.set(scaleFactor, -scaleFactor, scaleFactor);
+    rawGroup.updateMatrixWorld(true);
+
+    const center = new THREE.Vector3();
+    new THREE.Box3().setFromObject(rawGroup).getCenter(center);
+    rawGroup.position.sub(center);
+
+    pivot.add(rawGroup);
+    root3D.add(pivot);
+  }, undefined, (err) => {
+    console.warn('SVG読み込み失敗。代替オブジェクトを生成します。', err);
+    root3D.add(new THREE.Mesh(new THREE.BoxGeometry(55, 55, 6, 2, 2, 2), material));
+  });
+
+  // ---- パーティクル ----
+const P_COUNT = 900;
+const P_RANGE = 260;
+const positions = new Float32Array(P_COUNT * 3);
+const speeds = new Float32Array(P_COUNT);
+
+for (let i = 0; i < P_COUNT; i++) {
+  positions[i * 3]     = (Math.random() - 0.5) * P_RANGE * 1.6;
+  positions[i * 3 + 1] = (Math.random() - 0.5) * P_RANGE;
+  positions[i * 3 + 2] = (Math.random() - 0.5) * P_RANGE;
+  speeds[i] = 0.05 + Math.random() * 0.15;
+}
+
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+// 円形のソフトなスプライトを生成
+function makeDotTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.4, 'rgba(255,255,255,0.5)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+
+const pMat = new THREE.PointsMaterial({
+  size: 3.5,
+  map: makeDotTexture(),
+  color: 0x3fb04d,
+  transparent: true,
+  opacity: 0.75,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  sizeAttenuation: true
+});
+
+const particles = new THREE.Points(pGeo, pMat);
+scene.add(particles);
+
+
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth, h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+
+  // カーソル追従（X軸=上下、Y軸=左右）
+  window.addEventListener('mousemove', (e) => {
+    const mx = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+    const my = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    targetRotY = mx * 0.5;
+    targetRotX = 0.15 + my * 0.35;
+  });
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  if (root3D) {
+    curRotY += (targetRotY - curRotY) * 0.08;
+    curRotX += (targetRotX - curRotX) * 0.08;
+    root3D.rotation.y = curRotY;
+    root3D.rotation.x = curRotX;
+    root3D.position.y = Math.sin(Date.now() * 0.0012) * 2;
+  }
+
+  // パーティクル：ゆっくり上昇＋全体回転
+  const pos = pGeo.attributes.position.array;
+  for (let i = 0; i < P_COUNT; i++) {
+    pos[i * 3 + 1] += speeds[i];
+    if (pos[i * 3 + 1] > P_RANGE / 2) pos[i * 3 + 1] = -P_RANGE / 2;
+  }
+  pGeo.attributes.position.needsUpdate = true;
+
+  particles.rotation.y += 0.0006;
+  particles.rotation.y += (curRotY * 0.15 - particles.rotation.y) * 0.02;
+
+  renderer.render(scene, camera);
+}
+  loop();
+})();
   /* ---------- リサイズ時にレイアウト再計算 ---------- */
   window.addEventListener('load', () => ScrollTrigger.refresh());
 })();

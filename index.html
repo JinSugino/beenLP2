@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="assets/css/top.css?v=20260722k">
 </head>
 <body class="antialiased">
+    <div class="site-bg" aria-hidden="true"></div>
 
 <!-- ============================================================
      ローディング画面（最低1秒表示 → フェードアウト）
@@ -33,8 +34,6 @@
            autoplay muted playsinline preload="auto">
       <source src="assets/video/first-view.mp4" type="video/mp4">
     </video>
-
-    <!-- 動画が読めない場合のフォールバック -->
     <div class="loader-fallback" aria-hidden="true">
       <img src="assets/logo/BeEngineer_logo.svg" alt=""
            class="loader-logo"
@@ -148,7 +147,7 @@
   <!-- ============================================================
        イントロ（大きなコピー＋クリップ画像パララックス）
        ============================================================ -->
-  <section class="py-28 md:py-40 overflow-hidden">
+  <section class="py-28 md:py-40 overflow-hidden bg-white relative z-10">
     <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-10 md:gap-16 items-center">
       <div class="md:col-span-6">
         <p class="eyebrow text-[#3fb04d] mb-4 reveal">About the School</p>
@@ -285,32 +284,27 @@
     </div>
   </section>
 
-  <!-- ============================================================
+<!-- ============================================================
        ブリッジ（間）— 背景ロゴ＋写真2枚が時差フェードイン
        ============================================================ -->
-  <section class="logo-bridge">
-    <div class="logo-bridge-sticky">
-      <!-- 背景の薄グレーロゴ -->
-      <img src="assets/logo/BeEngineer_logo.svg" alt=""
-           class="logo-bridge-mark" aria-hidden="true"
-           onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
-      <span class="logo-bridge-text" style="display:none" aria-hidden="true">BeEngineer<span class="text-[#3fb04d]">_</span></span>
+<section class="logo-bridge">
+  <div class="logo-bridge-sticky">
+    <div id="bridge-canvas" class="logo-bridge-canvas" aria-hidden="true"></div>
+  </div>
 
-      <!-- 前面の写真2枚（時差フェードイン） -->
-      <div class="bridge-photos">
-        <figure class="bridge-photo bridge-photo-1" data-bridge-speed="0.18">
-          <img src="assets/images/bridge-01.jpg" alt="授業風景">
-        </figure>
-        <figure class="bridge-photo bridge-photo-2" data-bridge-speed="-0.12">
-          <img src="assets/images/bridge-02.jpg" alt="生徒の学習の様子">
-        </figure>
-        <figure class="bridge-photo bridge-photo-3" data-bridge-speed="0.26">
-          <img src="assets/images/bridge-03.jpg" alt="イベント授業の様子">
-        </figure>
-      </div>
-    </div>
-  </section>
+  <div class="bridge-photos">
+    <figure class="bridge-photo bridge-photo-1" data-bridge-speed="0.18">
+      <img src="assets/images/bridge-01.jpg" alt="授業風景">
+    </figure>
+    <figure class="bridge-photo bridge-photo-2" data-bridge-speed="-0.12">
+      <img src="assets/images/bridge-02.jpg" alt="生徒の学習の様子">
+    </figure>
+    <figure class="bridge-photo bridge-photo-3" data-bridge-speed="0.26">
+      <img src="assets/images/bridge-03.jpg" alt="イベント授業の様子">
+    </figure>
+  </div>
 
+</section>
   <!-- ============================================================
        NEWS
        ============================================================ -->
@@ -321,22 +315,22 @@
           <p class="eyebrow text-[#3fb04d] mb-3 reveal">News &amp; Topics</p>
           <h2 class="h-section text-2xl sm:text-3xl md:text-4xl text-gray-900 reveal d1">最新のお知らせ</h2>
         </div>
-        <a href="#" class="reveal d1 hidden sm:inline-flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-[#3fb04d] transition-colors">一覧へ
+        <a href="https://be-engineer.tech/news-list" class="reveal d1 hidden sm:inline-flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-[#3fb04d] transition-colors">一覧へ
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
       <ul class="reveal d2 divide-y divide-gray-100 border-t border-gray-100">
-        <li><a href="#" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
+        <li><a href="https://be-engineer.tech/news-list/23" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
           <time class="text-xs font-bold text-gray-400 tabular-nums shrink-0 w-24">2026.01.25</time>
           <span class="eyebrow text-[10px] text-[#3fb04d] bg-[#3fb04d]/10 px-2 py-0.5 rounded shrink-0">EVENT</span>
           <span class="text-sm md:text-base text-gray-800 group-hover:text-[#3fb04d] transition-colors">【2026年度新規生徒募集スタート！】</span>
         </a></li>
-        <li><a href="#" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
+        <li><a href="https://be-engineer.tech/news-list/22" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
           <time class="text-xs font-bold text-gray-400 tabular-nums shrink-0 w-24">2025.12.17</time>
           <span class="eyebrow text-[10px] text-[#3fb04d] bg-[#3fb04d]/10 px-2 py-0.5 rounded shrink-0">EVENT</span>
           <span class="text-sm md:text-base text-gray-800 group-hover:text-[#3fb04d] transition-colors">【イベント】プログラミング合宿実施の報告</span>
         </a></li>
-        <li><a href="#" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
+        <li><a href="https://be-engineer.tech/news-list/19" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-5 py-5 group">
           <time class="text-xs font-bold text-gray-400 tabular-nums shrink-0 w-24">2023.02.21</time>
           <span class="eyebrow text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded shrink-0">SCHOOL</span>
           <span class="text-sm md:text-base text-gray-800 group-hover:text-[#3fb04d] transition-colors">【イベントレポート】同志社中学様 冬の1DAYプログラミング体験</span>
@@ -361,7 +355,7 @@
         </p>
         <div class="mt-6 grid grid-cols-2 gap-1.5 max-w-sm">
           <!-- TODO: href を BeEngineer 公式 Instagram の実URLに差し替え -->
-          <a href="#" aria-label="Instagram（BeEngineer公式）"
+          <a href="https://be-engineer.tech/" aria-label="Instagram（BeEngineer公式）"
              class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
             <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#d6249f">
               <!-- アカウントのサムネ画像を使う場合はここに <img src="assets/images/sns-xxx.png"> を追加 -->
@@ -373,7 +367,7 @@
             </span>
           </a>
           <!-- TODO: href を BeEngineer 公式 YouTube の実URLに差し替え -->
-          <a href="#" aria-label="YouTube（BeEngineer公式）"
+          <a href="https://be-engineer.tech/" aria-label="YouTube（BeEngineer公式）"
              class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
             <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#ff0000">
               <!-- アカウントのサムネ画像を使う場合はここに <img src="assets/images/sns-xxx.png"> を追加 -->
@@ -385,7 +379,7 @@
             </span>
           </a>
           <!-- TODO: href を BeEngineer 公式 TikTok の実URLに差し替え -->
-          <a href="#" aria-label="TikTok（BeEngineer公式）"
+          <a href="https://be-engineer.tech/" aria-label="TikTok（BeEngineer公式）"
              class="group flex items-center gap-3 rounded-xl px-2.5 py-2 hover:bg-white/5 transition-colors">
             <span class="relative shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/15" style="background:#010101">
               <!-- アカウントのサムネ画像を使う場合はここに <img src="assets/images/sns-xxx.png"> を追加 -->
@@ -438,10 +432,12 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=20260722k"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="assets/js/top.js?v=20260722k"></script>
+<script src="assets/js/main.js?v=20260722m"></script>
+<script src="assets/js/top.js?v=20260722m"></script>
 </body>
 </html>
