@@ -468,7 +468,7 @@ body.loading { overflow: hidden; }
    ============================================================ */
 .logo-bridge {
   position: relative;
-  height: 200vh;
+  height: 2000vh;
   background: transparent;   /* ← #fff から変更 */
   z-index: 0;                /* ← 追加。site-bg(-1) より上、news(10) より下 */
 }
@@ -476,7 +476,7 @@ body.loading { overflow: hidden; }
 .logo-bridge-sticky {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 1000vh;
   width: 100%;
   display: grid;
   place-items: center;

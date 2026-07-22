@@ -187,13 +187,14 @@
     });
 
     // 速度差：1つの timeline にまとめる（写真ごとにトリガーを作らない）
+// 写真速度差（トリガー2）
     const bTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: bridge,
-        start: 'top bottom',
-        end: 'bottom top',
+    scrollTrigger: {
+        trigger: '.logo-bridge',
+        start: 'top top',        // ← セクション上端が画面上端に来たら
+        end: 'bottom bottom',    // ← セクション下端が画面下端に来るまで
         scrub: 1
-      }
+    }
     });
     photos.forEach((el) => {
       const sp = parseFloat(el.dataset.bridgeSpeed) || 0.15;
@@ -267,16 +268,15 @@
     const target = parseFloat(el.dataset.count);
     const suffix = el.dataset.suffix || '';
     const obj = { v: 0 };
+    // 3Dロゴ移動（トリガー3）
     ScrollTrigger.create({
-      trigger: el,
-      start: 'top 85%',
-      once: true,
-      onEnter() {
-        gsap.to(obj, {
-          v: target, duration: 1.6, ease: 'power2.out',
-          onUpdate() { el.textContent = Math.round(obj.v) + suffix; }
-        });
-      }
+    trigger: '.logo-bridge',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1,
+    onUpdate: (self) => {
+        logoScrollY = (self.progress - 0.2) * 120 * 0.2;
+    }
     });
   });
 
@@ -303,21 +303,23 @@
 // GSAPプラグイン登録（まだしていない場合）
 gsap.registerPlugin(ScrollTrigger);
 
-// ロゴブリッジセクションの2Dロゴ演出
-gsap.to(".logo-bridge-svg", {
-  opacity: 1,
-  scale: 1,
-  y: 0,
-  duration: 1,
-  ease: "power2.out",
-  scrollTrigger: {
-    trigger: ".logo-bridge",
-    start: "top 60%",  // セクションが画面下から60%の位置に来たら発動
-    end: "bottom top",
-    toggleActions: "play reverse play reverse" // 行き来した時に再アニメーション
+// ロゴブリッジセクションの2Dロゴ演出->なし
+(function initBridge3DLogo() {
+
+let logoScrollY = 0;
+let inBridge = false;
+
+ScrollTrigger.create({
+  trigger: '.logo-bridge',
+  start: 'top bottom',
+  end: 'bottom top',
+  scrub: 1,
+  onToggle: (self) => { inBridge = self.isActive; },
+  onUpdate: (self) => {
+    logoScrollY = (self.progress - 0.5) * 100 * 0.9;
   }
 });
-(function initBridge3DLogo() {
+
   const container = document.getElementById('bridge-canvas');
   if (!container || typeof THREE === 'undefined') return;
 
@@ -347,7 +349,7 @@ gsap.to(".logo-bridge-svg", {
   scene.add(root3D);
 
     const material = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
+    color: 0x000000,
     roughness: 0.25,
     metalness: 0.05,
     clearcoat: 1.0,
@@ -356,20 +358,31 @@ gsap.to(".logo-bridge-svg", {
 
   const loader = new THREE.SVGLoader();
   loader.load('assets/logo/BeEngineer_logo.svg', (data) => {
-    const rawGroup = new THREE.Group();
+        const rawGroup = new THREE.Group();
     const pivot = new THREE.Group();
     const extrude = { depth: 12, bevelEnabled: true, bevelThickness: 1, bevelSize: 0.5, bevelSegments: 3 };
-
-    data.paths.forEach((path) => {
-      THREE.SVGLoader.createShapes(path).forEach((shape) => {
-        rawGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, extrude), material));
-      });
+        const BLACK = new THREE.MeshPhysicalMaterial({
+      color: 0x000000, roughness: 0.25, metalness: 0.05,
+      clearcoat: 1.0, clearcoatRoughness: 0.1
+    });
+    const GREEN = new THREE.MeshPhysicalMaterial({
+      color: 0x3fb04d, roughness: 0.25, metalness: 0.05,
+      clearcoat: 1.0, clearcoatRoughness: 0.1
     });
 
-    rawGroup.updateMatrixWorld(true);
+    // ★ここの数字を 0〜9 で入れ替えて確認する
+    const GREEN_INDEXES = [2];
+
+    data.paths.forEach((path, i) => {
+      const mat = GREEN_INDEXES.includes(i) ? GREEN : BLACK;
+      THREE.SVGLoader.createShapes(path).forEach((shape) => {
+        rawGroup.add(new THREE.Mesh(new THREE.ExtrudeGeometry(shape, extrude), mat));
+      });
+    });
+        rawGroup.updateMatrixWorld(true);
     const size = new THREE.Vector3();
     new THREE.Box3().setFromObject(rawGroup).getSize(size);
-    const TARGET_SIZE = 100;  // 65 → 100 で約1.5倍
+    const TARGET_SIZE = 100;
     const scaleFactor = TARGET_SIZE / Math.max(size.x, size.y);
     rawGroup.scale.set(scaleFactor, -scaleFactor, scaleFactor);
     rawGroup.updateMatrixWorld(true);
@@ -448,14 +461,18 @@ scene.add(particles);
 
 function loop() {
   requestAnimationFrame(loop);
-
   if (root3D) {
     curRotY += (targetRotY - curRotY) * 0.08;
     curRotX += (targetRotX - curRotX) * 0.08;
     root3D.rotation.y = curRotY;
     root3D.rotation.x = curRotX;
-    root3D.position.y = Math.sin(Date.now() * 0.0012) * 2;
+
+    const floatY = Math.sin(Date.now() * 0.0012) * 2;
+    const targetY = inBridge ? (logoScrollY + floatY) : floatY;  // 区間外は浮遊だけ
+    root3D.position.y += (targetY - root3D.position.y) * 0.1;     // 常に補間
   }
+  
+  renderer.render(scene, camera);
 
   // パーティクル：ゆっくり上昇＋全体回転
   const pos = pGeo.attributes.position.array;
@@ -471,6 +488,7 @@ function loop() {
   renderer.render(scene, camera);
 }
   loop();
+
 })();
   /* ---------- リサイズ時にレイアウト再計算 ---------- */
   window.addEventListener('load', () => ScrollTrigger.refresh());
